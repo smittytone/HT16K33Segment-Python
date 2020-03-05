@@ -20,7 +20,7 @@ The class incorporates its own (limited) character set, accessed through the fol
 
 To instantiate a HT16K33Segment object pass the I&sup2;C bus to which the display is connected and, optionally, its I&sup2;C address. If no address is passed, the default value, `0x70` will be used. Pass an alternative address if you have changed the display’s address using the solder pads on rear of the LED’s circuit board.
 
-The passed imp I&sup2;C bus must be configured before the HT16K33Segment object is created.
+The passed I&sup2;C bus must be configured before the HT16K33Segment object is created.
 
 #### Example ####
 
@@ -55,7 +55,7 @@ led.set_char("-", 1)
 led.set_char("-", 2)
 led.set_char("-", 3)
 led.set_colon(true)
-led.update();
+led.update()
 ```
 
 ### set_blink_rate(*rate*) ###
@@ -66,7 +66,7 @@ This method can be used to flash the display. The value passed into *rate* is th
 
 ```python
 # Blink the display every second
-led.set_blink_rate(1);
+led.set_blink_rate(1)
 ```
 
 ### set_glyph(*glyph[, digit][, has_dot]*) ###
@@ -111,7 +111,7 @@ led.set_number(0, 4)
 led.set_number(1, 2, true)
 led.set_number(3, 4)
 led.set_number(4, 2)
-led.update();
+led.update()
 ```
 
 ### set_char(*character[, digit][, hasDot]*) ###
@@ -126,7 +126,7 @@ led.set_number("b", 4)
 led.set_number("e", 2)
 led.set_number("e", 4)
 led.set_number("f", 2)
-led.update();
+led.update()
 ```
 
 ### clear() ###
@@ -140,7 +140,7 @@ Call *clear()* to zero the class’ internal display buffer. If the optional *cl
 ```python
 # Clear the display
 led.clear()
-led.update();
+led.update()
 ```
 
 ### update() ###
