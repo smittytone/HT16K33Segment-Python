@@ -5,19 +5,19 @@ class HT16K33Segment:
     For example: https://learn.adafruit.com/adafruit-7-segment-led-featherwings/overview
     This release is written for CircuitPython
 
-    Version:   1.0.0
+    Version:   1.0.1
     Author:    smittytone
     Copyright: 2020, Tony Smith
     Licence:   MIT
     """
-
-    HT16K33_BLINK_CMD = 0x80
-    HT16K33_BLINK_DISPLAY_ON = 0x01
-    HT16K33_CMD_BRIGHTNESS = 0xE0
-    HT16K33_SYSTEM_ON = 0x21
-    HT16K33_COLON_ROW = 0x04
-    HT16K33_MINUS_CHAR = 0x10
-    HT16K33_DEGREE_CHAR = 0x11
+    
+    HT16K33_SEGMENT_BLINK_DISPLAY_ON = 0x01
+    HT16K33_SEGMENT_COLON_ROW = 0x04
+    HT16K33_SEGMENT_SYSTEM_ON = 0x21
+    HT16K33_SEGMENT_MINUS_CHAR = 0x10
+    HT16K33_SEGMENT_DEGREE_CHAR = 0x11
+    HT16K33_SEGMENT_BLINK_CMD = 0x80
+    HT16K33_SEGMENT_CMD_BRIGHTNESS = 0xE0
 
     # The positions of the segments within the buffer
     pos = [0, 2, 6, 8]
@@ -29,9 +29,10 @@ class HT16K33Segment:
 
     def __init__(self, i2c, address=0x70):
         self.i2c = i2c
+        if address < 0 or address > 255: return None
         self.address = address
         self.buffer = bytearray(16)
-        self._write_cmd(self.HT16K33_SYSTEM_ON)
+        self.write_cmd(self.HT16K33_SEGMENT_SYSTEM_ON)
         self.set_blink_rate()
         self.set_brightness(15)
 
@@ -48,7 +49,7 @@ class HT16K33Segment:
         if rate not in rates: return
         rate = rate & 0x03
         self.blink_rate = rate
-        self._write_cmd(self.HT16K33_BLINK_CMD | self.HT16K33_BLINK_DISPLAY_ON | rate << 1)
+        self.write_cmd(self.HT16K33_SEGMENT_BLINK_CMD | self.HT16K33_SEGMENT_BLINK_DISPLAY_ON | rate << 1)
 
     def set_brightness(self, brightness=15):
         """
@@ -62,7 +63,7 @@ class HT16K33Segment:
         if brightness < 0 or brightness > 15: brightness = 15
         brightness = brightness & 0x0F
         self.brightness = brightness
-        self._write_cmd(self.HT16K33_CMD_BRIGHTNESS | brightness)
+        self.write_cmd(self.HT16K33_SEGMENT_CMD_BRIGHTNESS | brightness)
 
     def set_glyph(self, glyph, digit=0, has_dot=False):
         """
@@ -128,7 +129,7 @@ class HT16K33Segment:
         if char in 'abcdef':
             char_val = ord(char) - 87
         elif char == '-':
-            char_val = self.HT16K33_MINUS_CHAR
+            char_val = self.HT16K33_SEGMENT_MINUS_CHAR
         elif char in '0123456789':
             char_val = ord(char) - 48
         elif char == ' ':
@@ -149,7 +150,7 @@ class HT16K33Segment:
         Args:
             isSet (bool): Whether the colon is lit (True) or not (False). Default: True.
         """
-        self.buffer[self.HT16K33_COLON_ROW] = 0x02 if is_set is True else 0x00
+        self.buffer[self.HT16K33_SEGMENT_COLON_ROW] = 0x02 if is_set is True else 0x00
 
     def clear(self):
         """
@@ -158,8 +159,7 @@ class HT16K33Segment:
         This method clears the display buffer, but does not send the buffer to the display itself.
         Call 'update()' to render the buffer on the display.
         """
-        buff = self.buffer
-        for index in range(16): buff[index] = 0x00
+        for index in range(16): self.buffer[index] = 0x00
 
     def update(self):
         """
@@ -172,7 +172,7 @@ class HT16K33Segment:
         buffer[1:] = self.buffer
         self.i2c.writeto(self.address, bytes(buffer))
 
-    def _write_cmd(self, byte):
+    def write_cmd(self, byte):
         """
         Writes a single command to the HT16K33. A private method.
 

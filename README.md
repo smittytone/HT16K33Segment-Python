@@ -149,8 +149,11 @@ Call *update()* after changing any or all of the internal display buffer content
 
 ## Release Notes ##
 
+- 1.0.1 *17 March 2020*
+  - Rename internal constants.
+  - Code improvements.
 - 1.0.0 *4 march 2020*
-    - Initial public release
+    - Initial public release.
 
 ## License ##
 
