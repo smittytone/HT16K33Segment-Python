@@ -1,4 +1,4 @@
-# HT16K33Segment 1.0.0 #
+# HT16K33Segment 1.0.2 #
 
 A hardware driver for the [Adafruit 0.56-inch 4-digit, 7-segment LED display](http://www.adafruit.com/products/878), which is based on the Holtek HT16K33 controller. The LED communicates over any I&sup2;C bus.
 
@@ -107,10 +107,10 @@ To write a number to a single digit, call *set_number()* and pass the digit numb
 
 ```python
 # Display '42.42' on the LED
-led.set_number(0, 4)
-led.set_number(1, 2, true)
-led.set_number(3, 4)
+led.set_number(4, 0)
+led.set_number(2, 1, True)
 led.set_number(4, 2)
+led.set_number(2, 3)
 led.update()
 ```
 
@@ -122,10 +122,10 @@ To write a number to a single digit, call *set_char()* and pass the digit number
 
 ```python
 # Display 'bEEF' on the LED
-led.set_number("b", 4)
-led.set_number("e", 2)
-led.set_number("e", 4)
-led.set_number("f", 2)
+led.set_char("b", 0)
+led.set_char("e", 1)
+led.set_char("e", 2)
+led.set_char("f", 3)
 led.update()
 ```
 
@@ -149,6 +149,9 @@ Call *update()* after changing any or all of the internal display buffer content
 
 ## Release Notes ##
 
+- 1.0.2 *Unreleased*
+    - Add smbus-based version
+    - Fix documentation issues
 - 1.0.1 *17 March 2020*
   - Rename internal constants.
   - Code improvements.

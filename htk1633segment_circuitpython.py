@@ -5,7 +5,7 @@ class HT16K33Segment:
     For example: https://learn.adafruit.com/adafruit-7-segment-led-featherwings/overview
     This release is written for CircuitPython
 
-    Version:   1.0.1
+    Version:   1.0.2
     Author:    smittytone
     Copyright: 2020, Tony Smith
     Licence:   MIT
