@@ -182,8 +182,8 @@ Call *update()* after changing any or all of the internal display buffer content
 ## Release Notes ##
 
 - 1.0.2 *Unreleased*
-    - Add smbus-based version
-    - Fix documentation issues
+    - Add smbus-based version.
+    - Fix documentation issues.
 - 1.0.1 *17 March 2020*
   - Rename internal constants.
   - Code improvements.
