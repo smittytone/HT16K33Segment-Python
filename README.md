@@ -1,4 +1,4 @@
-# HT16K33Segment 1.0.2 #
+# HT16K33Segment 2.0.0 #
 
 A hardware driver for the [Adafruit 0.56-inch 4-digit, 7-segment LED display](http://www.adafruit.com/products/878), which is based on the Holtek HT16K33 controller. The LED communicates over any I&sup2;C bus.
 
@@ -30,7 +30,7 @@ The passed I&sup2;C bus must be configured before the HT16K33Segment object is c
 
 ```python
 # Micropython
-from htk1633segment_micropython import HT16K33Segment
+from ht16k33segment_micropython import HT16K33Segment
 from machine import I2C
 
 DEVICE_I2C_SCL_PIN = 5
@@ -42,7 +42,7 @@ led = HT16K33Segment(i2c)
 
 ```python
 # Circuitpython
-from htk1633segment_micropython import HT16K33Segment
+from ht16k33segment_circuitpython import HT16K33Segment
 import busio
 import board
 
@@ -52,7 +52,7 @@ led = HT16K33Segment(i2c)
 
 ```python
 # Python
-from htk1633segment_micropython import HT16K33Segment
+from ht16k33segment_python import HT16K33Segment
 import smbus
 
 PI_I2C_BUS = 1
@@ -181,7 +181,8 @@ Call *update()* after changing any or all of the internal display buffer content
 
 ## Release Notes ##
 
-- 1.0.2 *Unreleased*
+- 2.0.0 *Unreleased*
+    - Correct library filenames.
     - Add smbus-based version.
     - Fix documentation issues.
 - 1.0.1 *17 March 2020*

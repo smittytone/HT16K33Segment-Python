@@ -1,4 +1,4 @@
-from htk1633segment_python import HT16K33Segment
+from ht16k33segment_python import HT16K33Segment
 import smbus
 import time
 
@@ -32,8 +32,8 @@ def anim(number, display, delay=1):
         display.update()
         time.sleep(delay)
         state = not state
-        
-        
+
+
 i2c = smbus.SMBus(1)
 led = HT16K33Segment(i2c)
 led.set_brightness(15)

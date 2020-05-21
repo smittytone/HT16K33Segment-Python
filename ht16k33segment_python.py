@@ -3,14 +3,14 @@ class HT16K33Segment:
     A simple driver for the I2C-connected Holtek HT16K33 controller chip and a four-digit,
     seven-segment LED connected to it.
     For example: https://learn.adafruit.com/adafruit-7-segment-led-featherwings/overview
-    This release is written for CircuitPython
+    This release is written for Python
 
-    Version:   1.0.2
+    Version:   2.0.0
     Author:    smittytone
     Copyright: 2020, Tony Smith
     Licence:   MIT
     """
-    
+
     HT16K33_SEGMENT_BLINK_DISPLAY_ON = 0x01
     HT16K33_SEGMENT_COLON_ROW = 0x04
     HT16K33_SEGMENT_SYSTEM_ON = 0x21
@@ -29,7 +29,6 @@ class HT16K33Segment:
 
     def __init__(self, i2c, address=0x70):
         self.i2c = i2c
-        if address < 0 or address > 255: return None
         self.address = address
         self.buffer = bytearray(16)
         self.write_cmd(self.HT16K33_SEGMENT_SYSTEM_ON)
@@ -61,7 +60,7 @@ class HT16K33Segment:
             brightness (int): The chosen flash rate. Default: 15 (100%).
         """
         if brightness < 0 or brightness > 15: brightness = 15
-        brightness = brightness & 0x0F
+        brightness &= 0x0F
         self.brightness = brightness
         self.write_cmd(self.HT16K33_SEGMENT_CMD_BRIGHTNESS | brightness)
 
@@ -168,9 +167,10 @@ class HT16K33Segment:
         Call this method after clearing the buffer or writing characters to the buffer to update
         the LED.
         """
-        buffer = bytearray(17)
-        buffer[1:] = self.buffer
-        self.i2c.writeto(self.address, bytes(buffer))
+        bfr = []
+        for i in range(0, len(self.buffer)):
+            bfr.append(self.buffer[i])
+        self.i2c.write_i2c_block_data(self.address, 0x00, bfr)
 
     def write_cmd(self, byte):
         """
@@ -179,6 +179,4 @@ class HT16K33Segment:
         Args:
             byte (int): The command value to send.
         """
-        temp = bytearray(1)
-        temp[0] = byte
-        self.i2c.writeto(self.address, temp)
+        self.i2c.write_byte(self.address, byte)

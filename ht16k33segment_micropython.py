@@ -3,9 +3,9 @@ class HT16K33Segment:
     A simple driver for the I2C-connected Holtek HT16K33 controller chip and a four-digit,
     seven-segment LED connected to it.
     For example: https://learn.adafruit.com/adafruit-7-segment-led-featherwings/overview
-    This release is written for Python
+    This release is written for MicroPython
 
-    Version:   1.0.2
+    Version:   2.0.0
     Author:    smittytone
     Copyright: 2020, Tony Smith
     Licence:   MIT
@@ -167,10 +167,7 @@ class HT16K33Segment:
         Call this method after clearing the buffer or writing characters to the buffer to update
         the LED.
         """
-        bfr = []
-        for i in range(0, len(self.buffer)):
-            bfr.append(self.buffer[i])
-        self.i2c.write_i2c_block_data(self.address, 0x00, bfr)
+        self.i2c.writeto_mem(self.address, 0x00, self.buffer)
 
     def write_cmd(self, byte):
         """
@@ -179,4 +176,6 @@ class HT16K33Segment:
         Args:
             byte (int): The command value to send.
         """
-        self.i2c.write_byte(self.address, byte)
+        temp = bytearray(1)
+        temp[0] = byte
+        self.i2c.writeto(self.address, temp)
