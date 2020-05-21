@@ -170,7 +170,7 @@ class HT16K33Segment:
         bfr = []
         for i in range(0, len(self.buffer)):
             bfr.append(self.buffer[i])
-        self.i2c.writeto_mem(self.address, 0x00, bfr)
+        self.i2c.write_i2c_block_data(self.address, 0x00, bfr)
 
     def write_cmd(self, byte):
         """
