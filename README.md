@@ -2,7 +2,7 @@
 
 A hardware driver for the [Adafruit 0.56-inch 4-digit, 7-segment LED display](http://www.adafruit.com/products/878), which is based on the Holtek HT16K33 controller. The LED communicates over any I&sup2;C bus.
 
-Two versions of the driver are available, one for [CircuitPython](https://circuitpython.readthedocs.io/en/latest/docs/index.html) applications, the other for code written in [MicroPython](http://docs.micropython.org/en/latest/index.html).
+Three versions of the driver are available, one for [CircuitPython](https://circuitpython.readthedocs.io/en/latest/docs/index.html) applications, another for code written in [MicroPython](http://docs.micropython.org/en/latest/index.html) and a third for regular Python, for use on the Raspberry Pi, for example.
 
 ## Characters ##
 
@@ -22,10 +22,38 @@ To instantiate a HT16K33Segment object pass the I&sup2;C bus to which the displa
 
 The passed I&sup2;C bus must be configured before the HT16K33Segment object is created.
 
-#### Example ####
+#### Examples ####
 
 ```python
+# Micropython
+from htk1633segment_micropython import HT16K33Segment
+from machine import I2C
+
+DEVICE_I2C_SCL_PIN = 5
+DEVICE_I2C_SDA_PIN = 4
+
+i2c = I2C(scl=Pin(DEVICE_I2C_SCL_PIN), sda=Pin(DEVICE_I2C_SDA_PIN))
+led = HT16K33Segment(i2c)
+```
+
+```python
+# Circuitpython
+from htk1633segment_micropython import HT16K33Segment
+import busio
+import board
+
 i2c = busio.I2C(board.SCL, board.SDA)
+led = HT16K33Segment(i2c)
+```
+
+```python
+# Python
+from htk1633segment_micropython import HT16K33Segment
+import smbus
+
+PI_I2C_BUS = 1
+
+i2c = smbus.SMBus(PI_I2C_BUS)
 led = HT16K33Segment(i2c)
 ```
 
