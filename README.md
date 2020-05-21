@@ -181,7 +181,7 @@ Call *update()* after changing any or all of the internal display buffer content
 
 ## Release Notes ##
 
-- 2.0.0 *Unreleased*
+- 2.0.0 *21 May 2020*
     - Correct library filenames.
     - Add smbus-based version.
     - Fix documentation issues.
