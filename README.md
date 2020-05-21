@@ -14,6 +14,10 @@ The class incorporates its own (limited) character set, accessed through the fol
 - Minus character: code 17
 - Degree character: code 18
 
+## Display Digits ##
+
+The display’s digits are numbered 0 to 3, from left to right.
+
 ## Class Usage ##
 
 ### Constructor: HT16K33Segment(*anI2cBus[, i2cAddress]*) ###
@@ -99,7 +103,7 @@ led.set_blink_rate(1)
 
 ### set_glyph(*glyph[, digit][, has_dot]*) ###
 
-To write a character that is not in the character set *(see [above](#characters))* to a single digit, call *set_glyph()* and pass a glyph-definition pattern and the digit number (0, 1, 3 or 4) as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified digit should be illuminated. By default, the decimal point is not lit.
+To write a character that is not in the character set *(see [above](#characters))* to a single digit, call *set_glyph()* and pass a glyph-definition pattern and the digit number (0, 1, 2 or 3, left to right) as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified digit should be illuminated. By default, the decimal point is not lit.
 
 Calculate the glyph pattern value using the following chart. The segment number is the bit that must be set to illuminate it (or unset to keep it unlit):
 
@@ -129,7 +133,7 @@ led.update()
 
 ### set_number(*number[, digit][, hasDot]*) ###
 
-To write a number to a single digit, call *set_number()* and pass the digit number (0, 1, 3 or 4) and the number to be displayed (0 to 9, A to F) as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified segment should be illuminated. By default, the decimal point is not lit.
+To write a number to a single digit, call *set_number()* and pass the digit number (0, 1, 2 or 4, left to right) and the number to be displayed (0 to 9, A to F) as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified segment should be illuminated. By default, the decimal point is not lit.
 
 #### Example ####
 
@@ -144,7 +148,7 @@ led.update()
 
 ### set_char(*character[, digit][, hasDot]*) ###
 
-To write a number to a single digit, call *set_char()* and pass the digit number (0, 1, 3 or 4) and the number to be displayed (0 to 9, A to F) as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified segment should be illuminated. By default, the decimal point is not lit.
+To write a number to a single digit, call *set_char()* and pass the digit number (0, 1, 2 or 3, left to right) and the number to be displayed (0 to 9, A to F) as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified segment should be illuminated. By default, the decimal point is not lit.
 
 #### Example ####
 
