@@ -5,7 +5,7 @@ class HT16K33Segment:
     For example: https://learn.adafruit.com/adafruit-7-segment-led-featherwings/overview
     This release is written for Python
 
-    Version:   2.0.0
+    Version:   2.1.0
     Author:    smittytone
     Copyright: 2020, Tony Smith
     Licence:   MIT
@@ -92,6 +92,7 @@ class HT16K33Segment:
         if not 0 <= digit <= 3: return
         self.buffer[self.pos[digit]] = glyph
         if has_dot is True: self.buffer[self.pos[digit]] |= 0b10000000
+        return self
 
     def set_number(self, number, digit=0, has_dot=False):
         """
@@ -105,7 +106,7 @@ class HT16K33Segment:
             digit (int):   The digit to show the number. Default: 0 (leftmost digit).
             has_dot (bool): Whether the decimal point to the right of the digit should be lit. Default: False.
         """
-        self.set_char(str(number), digit, has_dot)
+        return self.set_char(str(number), digit, has_dot)
 
     def set_char(self, char, digit=0, has_dot=False):
         """
@@ -138,6 +139,7 @@ class HT16K33Segment:
 
         self.buffer[self.pos[digit]] = self.chars[char_val]
         if has_dot is True: self.buffer[self.pos[digit]] |= 0b10000000
+        return self
 
     def set_colon(self, is_set=True):
         """
@@ -150,6 +152,7 @@ class HT16K33Segment:
             isSet (bool): Whether the colon is lit (True) or not (False). Default: True.
         """
         self.buffer[self.HT16K33_SEGMENT_COLON_ROW] = 0x02 if is_set is True else 0x00
+        return self
 
     def clear(self):
         """
@@ -159,6 +162,7 @@ class HT16K33Segment:
         Call 'update()' to render the buffer on the display.
         """
         for index in range(16): self.buffer[index] = 0x00
+        return self
 
     def update(self):
         """

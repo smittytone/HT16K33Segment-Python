@@ -5,12 +5,12 @@ class HT16K33Segment:
     For example: https://learn.adafruit.com/adafruit-7-segment-led-featherwings/overview
     This release is written for CircuitPython
 
-    Version:   2.0.0
+    Version:   2.0.1
     Author:    smittytone
     Copyright: 2020, Tony Smith
     Licence:   MIT
     """
-    
+
     HT16K33_SEGMENT_BLINK_DISPLAY_ON = 0x01
     HT16K33_SEGMENT_COLON_ROW = 0x04
     HT16K33_SEGMENT_SYSTEM_ON = 0x21
@@ -28,8 +28,8 @@ class HT16K33Segment:
 
 
     def __init__(self, i2c, address=0x70):
-        self.i2c = i2c
         if address < 0 or address > 255: return None
+        self.i2c = i2c
         self.address = address
         self.buffer = bytearray(16)
         self.write_cmd(self.HT16K33_SEGMENT_SYSTEM_ON)
@@ -61,7 +61,6 @@ class HT16K33Segment:
             brightness (int): The chosen flash rate. Default: 15 (100%).
         """
         if brightness < 0 or brightness > 15: brightness = 15
-        brightness = brightness & 0x0F
         self.brightness = brightness
         self.write_cmd(self.HT16K33_SEGMENT_CMD_BRIGHTNESS | brightness)
 
@@ -90,7 +89,7 @@ class HT16K33Segment:
             digit (int):   The digit to show the glyph. Default: 0 (leftmost digit).
             has_dot (bool): Whether the decimal point to the right of the digit should be lit. Default: False.
         """
-        if not 0 <= digit <= 3: return
+        if not 0 <= digit <= 3: return None
         self.buffer[self.pos[digit]] = glyph
         if has_dot is True: self.buffer[self.pos[digit]] |= 0b10000000
 
@@ -124,7 +123,7 @@ class HT16K33Segment:
             digit (int):   The digit to show the number. Default: 0 (leftmost digit).
             has_dot (bool): Whether the decimal point to the right of the digit should be lit. Default: False.
         """
-        if not 0 <= digit <= 3: return
+        if not 0 <= digit <= 3: return Nones
         char = char.lower()
         if char in 'abcdef':
             char_val = ord(char) - 87
@@ -138,7 +137,7 @@ class HT16K33Segment:
             return
 
         self.buffer[self.pos[digit]] = self.chars[char_val]
-        if has_dot is True: self.buffer[self.pos[digit]] |= 0b10000000
+        if has_dot is True: self.buffer[self.pos[digit]] |= 0x80
 
     def set_colon(self, is_set=True):
         """
