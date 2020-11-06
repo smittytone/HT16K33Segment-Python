@@ -1,6 +1,6 @@
 # HT16K33Segment 2.1.0 #
 
-**IMPORTANT** This repo has been superseded and will soon be archived. Please see [**HT16K33-Python**]https://github.com/smittytone/HT16K33-Python) for version 3.0.0 of the driver — and drivers for other HT16K33-based displays.
+**IMPORTANT** This repo has been superseded and will soon be archived. Please see [**HT16K33-Python**](https://github.com/smittytone/HT16K33-Python) for version 3.0.0 of the driver — and drivers for other HT16K33-based displays.
 
 
 A hardware driver for the [Adafruit 0.56-inch 4-digit, 7-segment LED display](http://www.adafruit.com/products/878), which is based on the Holtek HT16K33 controller. The LED communicates over any I&sup2;C bus.
