@@ -5,7 +5,7 @@ class HT16K33Segment:
     For example: https://learn.adafruit.com/adafruit-7-segment-led-featherwings/overview
     This release is written for MicroPython
 
-    Version:   2.0.0
+    Version:   2.1.0
     Author:    smittytone
     Copyright: 2020, Tony Smith
     Licence:   MIT
@@ -28,6 +28,7 @@ class HT16K33Segment:
 
 
     def __init__(self, i2c, address=0x70):
+        if address < 0 or address > 255: return None
         self.i2c = i2c
         self.address = address
         self.buffer = bytearray(16)
@@ -60,7 +61,6 @@ class HT16K33Segment:
             brightness (int): The chosen flash rate. Default: 15 (100%).
         """
         if brightness < 0 or brightness > 15: brightness = 15
-        brightness &= 0x0F
         self.brightness = brightness
         self.write_cmd(self.HT16K33_SEGMENT_CMD_BRIGHTNESS | brightness)
 
@@ -89,9 +89,10 @@ class HT16K33Segment:
             digit (int):   The digit to show the glyph. Default: 0 (leftmost digit).
             has_dot (bool): Whether the decimal point to the right of the digit should be lit. Default: False.
         """
-        if not 0 <= digit <= 3: return
+        if not 0 <= digit <= 3: return None
         self.buffer[self.pos[digit]] = glyph
         if has_dot is True: self.buffer[self.pos[digit]] |= 0b10000000
+        return self
 
     def set_number(self, number, digit=0, has_dot=False):
         """
@@ -105,7 +106,7 @@ class HT16K33Segment:
             digit (int):   The digit to show the number. Default: 0 (leftmost digit).
             has_dot (bool): Whether the decimal point to the right of the digit should be lit. Default: False.
         """
-        self.set_char(str(number), digit, has_dot)
+        return self.set_char(str(number), digit, has_dot)
 
     def set_char(self, char, digit=0, has_dot=False):
         """
@@ -123,7 +124,7 @@ class HT16K33Segment:
             digit (int):   The digit to show the number. Default: 0 (leftmost digit).
             has_dot (bool): Whether the decimal point to the right of the digit should be lit. Default: False.
         """
-        if not 0 <= digit <= 3: return
+        if not 0 <= digit <= 3: return None
         char = char.lower()
         if char in 'abcdef':
             char_val = ord(char) - 87
@@ -137,7 +138,8 @@ class HT16K33Segment:
             return
 
         self.buffer[self.pos[digit]] = self.chars[char_val]
-        if has_dot is True: self.buffer[self.pos[digit]] |= 0b10000000
+        if has_dot is True: self.buffer[self.pos[digit]] |= 0x80
+        return self
 
     def set_colon(self, is_set=True):
         """
@@ -150,6 +152,7 @@ class HT16K33Segment:
             isSet (bool): Whether the colon is lit (True) or not (False). Default: True.
         """
         self.buffer[self.HT16K33_SEGMENT_COLON_ROW] = 0x02 if is_set is True else 0x00
+        return self
 
     def clear(self):
         """
@@ -159,6 +162,7 @@ class HT16K33Segment:
         Call 'update()' to render the buffer on the display.
         """
         for index in range(16): self.buffer[index] = 0x00
+        return self
 
     def update(self):
         """
@@ -167,7 +171,9 @@ class HT16K33Segment:
         Call this method after clearing the buffer or writing characters to the buffer to update
         the LED.
         """
-        self.i2c.writeto_mem(self.address, 0x00, self.buffer)
+        buffer = bytearray(17)
+        buffer[1:] = self.buffer
+        self.i2c.writeto(self.address, bytes(buffer))
 
     def write_cmd(self, byte):
         """

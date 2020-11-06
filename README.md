@@ -1,8 +1,11 @@
-# HT16K33Segment 2.0.0 #
+# HT16K33Segment 2.1.0 #
+
+**IMPORTANT** This repo has been superseded and will soon be archived. Please see [**HT16K33-Python**]https://github.com/smittytone/HT16K33-Python) for version 3.0.0 of the driver — and drivers for other HT16K33-based displays.
+
 
 A hardware driver for the [Adafruit 0.56-inch 4-digit, 7-segment LED display](http://www.adafruit.com/products/878), which is based on the Holtek HT16K33 controller. The LED communicates over any I&sup2;C bus.
 
-Three versions of the driver are available, one for [CircuitPython](https://circuitpython.readthedocs.io/en/latest/docs/index.html) applications, another for code written in [MicroPython](http://docs.micropython.org/en/latest/index.html) and a third for regular Python, for use on the Raspberry Pi, for example.
+Three versions of the driver are available, one for [CircuitPython](https://circuitpython.org) applications, another for code written in [MicroPython](https://dmicropython.org) and a third for regular Python, for use on the Raspberry Pi, for example.
 
 ## Characters ##
 
@@ -17,6 +20,14 @@ The class incorporates its own (limited) character set, accessed through the fol
 ## Display Digits ##
 
 The display’s digits are numbered 0 to 3, from left to right.
+
+## Method Chaining ##
+
+From version 2.1.0, most methods return a reference to the instance (*self*) to allow method chaining with dot syntax:
+
+```python
+led.clear().set_number(4, 0).set_number(3, 1).update()
+```
 
 ## Class Usage ##
 
@@ -76,7 +87,9 @@ led.set_brightness(1)
 
 ### set_colon(*is_set*) ###
 
-Call *set_colon()* to specify whether the display’s center colon symbol is illuminated (`true`) or not (`false`).
+Call *set_colon()* to specify whether the display’s center colon symbol is illuminated (`True`) or not (`False`).
+
+This method returns *self*.
 
 #### Example ####
 
@@ -120,6 +133,8 @@ Calculate the glyph pattern value using the following chart. The segment number 
 
 For example, to define the letter 'P', we need to set segments 0, 1, 4, 5 and 6. In bit form that makes 0x73, and this is the value passed into *pattern*.
 
+This method returns *self*.
+
 #### Example ####
 
 ```python
@@ -135,6 +150,8 @@ led.update()
 
 To write a number to a single digit, call *set_number()* and pass the digit number (0, 1, 2 or 4, left to right) and the number to be displayed (0 to 9, A to F) as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified segment should be illuminated. By default, the decimal point is not lit.
 
+This method returns *self*.
+
 #### Example ####
 
 ```python
@@ -149,6 +166,8 @@ led.update()
 ### set_char(*character[, digit][, hasDot]*) ###
 
 To write a number to a single digit, call *set_char()* and pass the digit number (0, 1, 2 or 3, left to right) and the number to be displayed (0 to 9, A to F) as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified segment should be illuminated. By default, the decimal point is not lit.
+
+This method returns *self*.
 
 #### Example ####
 
@@ -167,6 +186,8 @@ Call *clear()* to zero the class’ internal display buffer. If the optional *cl
 
 *clear()* does not update the display, only the buffer. Call *update()* to refresh the LED.
 
+This method returns *self*.
+
 #### Example ####
 
 ```python
@@ -181,6 +202,9 @@ Call *update()* after changing any or all of the internal display buffer content
 
 ## Release Notes ##
 
+- 2.1.0 *Unreleased*
+    - Harmonise MicroPython and CircuitPython libraries for future merger.
+    - Return *self* from some methods to support method chaining.
 - 2.0.0 *21 May 2020*
     - Correct library filenames.
     - Add smbus-based version.
